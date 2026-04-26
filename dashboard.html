@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tactical Dashboard | NSG Supervisor</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/variables.css" />
+  <link rel="stylesheet" href="./css/global.css" />
+  <link rel="stylesheet" href="./css/dashboard.css" />
+</head>
+<body class="dashboard-layout">
+  <div class="bg-glow"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar animate-fade-in">
+    <div class="sidebar-header">
+      <i class="ri-shield-cross-fill"></i>
+      <h2>NSG TACTICAL</h2>
+    </div>
+    
+    <div class="sidebar-nav">
+      <div class="nav-item active">
+        <i class="ri-layout-grid-fill"></i> Multi-Cam Overview
+      </div>
+      <div class="nav-item">
+        <i class="ri-radar-line"></i> Heatmap / Radar
+      </div>
+      <div class="nav-item">
+        <i class="ri-alarm-warning-line"></i> Alert Logs
+      </div>
+      <div class="nav-item">
+        <i class="ri-settings-3-line"></i> Model Settings
+      </div>
+      <div class="nav-item" onclick="window.location.href='index.html'">
+        <i class="ri-logout-box-r-line"></i> Secure Logout
+      </div>
+    </div>
+    
+    <div class="sidebar-footer">
+      <div class="status-badge" style="justify-content: center; width: 100%;">
+        <span class="status-dot"></span> Secure Connection
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="topbar animate-fade-in delay-1">
+      <div class="topbar-title">Command Center / Sector Alpha</div>
+      <div class="topbar-actions">
+        <div class="status-badge">
+          Model: Active (YOLOv8)
+        </div>
+        <button class="btn btn-outline" style="padding: 0.5rem;"><i class="ri-fullscreen-line"></i></button>
+      </div>
+    </header>
+
+    <div class="video-workspace animate-fade-in delay-2">
+      <div class="workspace-controls">
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn btn-primary" id="btnStartAll"><i class="ri-play-fill"></i> Start All Feeds</button>
+          <button class="btn btn-outline" id="btnStopAll"><i class="ri-stop-fill"></i> Pause All</button>
+        </div>
+        <div style="color: var(--text-secondary); font-size: 0.9rem;">
+          Network Latency: <span style="color: var(--accent-success);">12ms</span>
+        </div>
+      </div>
+
+      <div class="cam-grid">
+        <!-- Camera 1: Normal Feed -->
+        <div class="glass-panel cam-card">
+          <div class="cam-header">
+            <div class="cam-title"><i class="ri-vidicon-line"></i> Drone Cam - Sector A</div>
+            <div class="status-badge"><span class="status-dot"></span> Live</div>
+          </div>
+          <div class="cam-feed">
+            <video id="vid1" muted loop playsinline>
+              <source src="./assets/video/normal1.mp4" type="video/mp4">
+            </video>
+            <div class="cam-overlay" id="overlay1"></div>
+          </div>
+          <div class="cam-footer">
+            <button class="btn btn-outline" onclick="togglePlay('vid1')"><i class="ri-play-circle-line"></i> Play/Pause</button>
+            <button class="btn btn-outline"><i class="ri-focus-3-line"></i> Calibrate ML</button>
+          </div>
+        </div>
+
+        <!-- Camera 2: Anomaly Detection Feed -->
+        <div class="glass-panel cam-card" style="border-color: rgba(239,68,68,0.3);">
+          <div class="cam-header">
+            <div class="cam-title" style="color: var(--accent-danger);"><i class="ri-error-warning-line"></i> CCTV 4 - Restricted Area</div>
+            <div class="status-badge warning"><span class="status-dot"></span> Anomaly Detected</div>
+          </div>
+          <div class="cam-feed">
+            <video id="vid2" muted loop playsinline>
+              <source src="./assets/video/anomoly1.mp4" type="video/mp4">
+            </video>
+            <div class="cam-overlay" id="overlay2">
+              <div class="bbox" id="bbox2">
+                <div class="bbox-label">Suspicious Movement 98%</div>
+              </div>
+            </div>
+          </div>
+          <div class="cam-footer">
+            <button class="btn btn-outline" onclick="togglePlay('vid2')"><i class="ri-play-circle-line"></i> Play/Pause</button>
+            <button class="btn btn-danger"><i class="ri-alarm-warning-line"></i> Dispatch Unit</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Alerts Section -->
+      <div class="glass-panel alerts-panel">
+        <div class="cam-header">
+          <div class="cam-title"><i class="ri-notification-3-line"></i> Recent AI Alerts</div>
+        </div>
+        <div style="padding: 1rem;" id="alertsContainer">
+          <div class="alert-item">
+            <div class="alert-time">14:05:22</div>
+            <div>
+              <strong>High Confidence Anomaly</strong>
+              <div style="color: var(--text-secondary); font-size: 0.8rem;">CCTV 4 - Unauthorized personnel detected in restricted zone.</div>
+            </div>
+          </div>
+          <div class="alert-item" style="border-left-color: var(--accent-warning); background: rgba(245, 158, 11, 0.05);">
+            <div class="alert-time">13:50:11</div>
+            <div>
+              <strong>Unidentified Object</strong>
+              <div style="color: var(--text-secondary); font-size: 0.8rem;">Drone Cam Sector B - Object dropped near perimeter.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="./js/dashboard.js"></script>
+</body>
+</html>

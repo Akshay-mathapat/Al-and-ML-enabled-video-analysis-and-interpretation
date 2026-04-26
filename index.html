@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NSG Supervisor | AI Command & Anomaly Detection System</title>
+  
+  <!-- Fonts and Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./css/variables.css" />
+  <link rel="stylesheet" href="./css/global.css" />
+  
+  <style>
+    /* Specific styles for Landing Page */
+    main {
+      padding-top: 100px;
+    }
+
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 1.5rem;
+      max-width: 900px;
+      background: linear-gradient(to right, #fff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin-bottom: 3rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .features {
+      padding: 6rem 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      transition: transform var(--transition-smooth);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--border-highlight);
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      color: var(--text-primary);
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    footer {
+      padding: 3rem;
+      text-align: center;
+      color: var(--text-muted);
+      border-top: var(--glass-border);
+      background: rgba(10, 11, 16, 0.8);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <div class="bg-glow-right"></div>
+
+  <header>
+    <div class="logo">
+      <i class="ri-shield-check-fill" style="font-size: 2rem; color: var(--accent-primary);"></i>
+      <h2>NSG SUPERVISOR</h2>
+    </div>
+    <nav>
+      <a href="#home" class="active">Home</a>
+      <a href="#features">Capabilities</a>
+      <a href="#about">Mission</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-controls">
+      <button class="btn btn-outline" id="themeToggle" title="Toggle Theme">
+        <i class="ri-sun-line"></i>
+      </button>
+      <button class="btn btn-danger" onclick="window.location.href='login.html'">
+        <i class="ri-lock-2-line"></i> Secure Login
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <h1 class="animate-fade-in delay-1">AI-Powered Command & Anomaly Detection</h1>
+      <p class="animate-fade-in delay-2">
+        Integrating Artificial Intelligence and Machine Learning to enhance decision-making, detect anomalies, and secure national interests with unmatched precision and speed.
+      </p>
+      <div class="hero-buttons animate-fade-in delay-3">
+        <button class="btn btn-primary" onclick="window.location.href='login.html'">
+          <i class="ri-dashboard-line"></i> Launch Secure Console
+        </button>
+        <button class="btn btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+          Explore Features
+        </button>
+      </div>
+    </section>
+
+    <section id="features" class="features animate-fade-in delay-4">
+      <div class="glass-panel feature-card">
+        <div class="feature-icon">
+          <i class="ri-focus-3-line"></i>
+        </div>
+        <h3>Real-time Anomaly Detection</h3>
+        <p>Advanced neural networks scan video feeds in real-time, instantly identifying unauthorized personnel, suspicious packages, or unusual behavioral patterns without human intervention.</p>
+      </div>
+      
+      <div class="glass-panel feature-card">
+        <div class="feature-icon">
+          <i class="ri-radar-line"></i>
+        </div>
+        <h3>Multi-Cam Synchronization</h3>
+        <p>Seamlessly integrate streams from drones, bodycams, and stationary CCTV networks. Our dashboard provides a unified, low-latency tactical overview for commanders.</p>
+      </div>
+      
+      <div class="glass-panel feature-card">
+        <div class="feature-icon">
+          <i class="ri-line-chart-line"></i>
+        </div>
+        <h3>Predictive Analytics</h3>
+        <p>Utilizing historical data and pattern recognition, the system highlights high-risk zones through dynamic heatmaps, empowering proactive troop deployment.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 NSG Supervisor System | Developed for AI-Integrated Command Operations</p>
+  </footer>
+
+  <script src="./js/main.js"></script>
+</body>
+</html>

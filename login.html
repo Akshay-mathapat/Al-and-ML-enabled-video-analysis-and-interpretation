@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Secure Login | NSG Supervisor</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/variables.css" />
+  <link rel="stylesheet" href="./css/global.css" />
+  
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 3rem 2.5rem;
+      text-align: center;
+    }
+
+    .login-container i {
+      font-size: 3rem;
+      color: var(--accent-danger);
+      margin-bottom: 1rem;
+    }
+
+    .login-container h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-container p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      border-radius: 8px;
+      font-family: var(--font-family);
+      transition: all var(--transition-fast);
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-primary);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.85rem;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      transition: color var(--transition-fast);
+    }
+
+    .back-link:hover {
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <div class="bg-glow-right"></div>
+
+  <div class="glass-panel login-container animate-fade-in">
+    <i class="ri-shield-keyhole-fill"></i>
+    <h2>Supervisor Access</h2>
+    <p>Authenticate to access the multi-cam tactical dashboard.</p>
+    
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Service ID</label>
+        <input type="text" id="username" class="form-control" placeholder="Enter your 6-digit ID" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Secure Passcode</label>
+        <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-submit">
+        <i class="ri-login-circle-line"></i> Authenticate
+      </button>
+    </form>
+    
+    <a href="index.html" class="back-link"><i class="ri-arrow-left-line"></i> Return to Homepage</a>
+  </div>
+
+  <script src="./js/main.js"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Simulate authentication
+      const btn = this.querySelector('button');
+      btn.innerHTML = '<i class="ri-loader-4-line ri-spin"></i> Verifying...';
+      
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
