@@ -120,15 +120,40 @@
 
   <script src="./js/main.js"></script>
   <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      // Simulate authentication
+      
       const btn = this.querySelector('button');
+      const originalText = btn.innerHTML;
       btn.innerHTML = '<i class="ri-loader-4-line ri-spin"></i> Verifying...';
       
-      setTimeout(() => {
-        window.location.href = 'dashboard.html';
-      }, 1500);
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          // Store token if needed
+          localStorage.setItem('token', data.token);
+          window.location.href = 'dashboard.html';
+        } else {
+          alert(data.detail || 'Authentication failed');
+          btn.innerHTML = originalText;
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        alert('Server connection error. Please try again later.');
+        btn.innerHTML = originalText;
+      }
     });
   </script>
 </body>
