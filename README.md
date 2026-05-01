@@ -50,4 +50,12 @@ To transition this from a frontend mockup to a fully functional AI product:
 4. Push those coordinates to the frontend to draw the `.bbox` overlay dynamically.
 
 ---
-*Developed for AI-Integrated Command Operations.*
+*Developed for AI-Integrated Command Operations.*   
+
+OUTPUT 
+<img width="1881" height="811" alt="Screenshot 2026-04-26 221836" src="https://github.com/user-attachments/assets/145b4ce5-ef0b-4a31-bd6f-5ef9cf203dff" />
+<img width="834" height="768" alt="Screenshot 2026-04-26 215131" src="https://github.com/user-attachments/assets/deff9b2b-055b-4cdf-8067-09b97f8582d6" />
+<img width="1910" height="843" alt="Screenshot 2026-04-26 222017" src="https://github.com/user-attachments/assets/050deb49-76ca-455b-9379-6c263b9ec312" />
+<img width="1919" height="841" alt="Screenshot 2026-04-26 222054" src="https://github.com/user-attachments/assets/0e29f7bf-546d-4f16-831d-df1be370361c" />
+<img width="1894" height="838" alt="Screenshot 2026-04-26 222142" src="https://github.com/user-attachments/assets/ce0d8b4d-8d41-45f0-a39a-fdf772ba680a" />
+
