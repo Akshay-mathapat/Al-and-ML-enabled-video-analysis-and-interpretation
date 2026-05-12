@@ -153,6 +153,9 @@
         </div>
         <h3>Real-time Anomaly Detection</h3>
         <p>Advanced neural networks scan video feeds in real-time, instantly identifying unauthorized personnel, suspicious packages, or unusual behavioral patterns without human intervention.</p>
+        <div style="margin-top: auto; height: 80px; width: 100%; position: relative; overflow: hidden; border-radius: 8px;">
+          <canvas id="anomalyGraph" style="width: 100%; height: 100%;"></canvas>
+        </div>
       </div>
       
       <div class="glass-panel feature-card">
@@ -161,6 +164,9 @@
         </div>
         <h3>Multi-Cam Synchronization</h3>
         <p>Seamlessly integrate streams from drones, bodycams, and stationary CCTV networks. Our dashboard provides a unified, low-latency tactical overview for commanders.</p>
+        <div style="margin-top: auto; height: 80px; width: 100%; position: relative; overflow: hidden; border-radius: 8px;">
+          <canvas id="syncGraph" style="width: 100%; height: 100%;"></canvas>
+        </div>
       </div>
       
       <div class="glass-panel feature-card">
@@ -169,6 +175,9 @@
         </div>
         <h3>Predictive Analytics</h3>
         <p>Utilizing historical data and pattern recognition, the system highlights high-risk zones through dynamic heatmaps, empowering proactive troop deployment.</p>
+        <div style="margin-top: auto; height: 80px; width: 100%; position: relative; overflow: hidden; border-radius: 8px;">
+          <canvas id="predictiveGraph" style="width: 100%; height: 100%;"></canvas>
+        </div>
       </div>
     </section>
 
@@ -202,5 +211,186 @@
   </footer>
 
   <script src="./js/main.js"></script>
+  <script>
+    // Animated graphs for feature cards
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      function setupCanvas(id) {
+        const canvas = document.getElementById(id);
+        if (!canvas) return null;
+        const ctx = canvas.getContext('2d');
+        
+        function resize() {
+          const rect = canvas.parentElement.getBoundingClientRect();
+          const dpr = window.devicePixelRatio || 1;
+          canvas.width = rect.width * dpr;
+          canvas.height = rect.height * dpr;
+          ctx.scale(dpr, dpr);
+          return rect;
+        }
+        
+        let rect = resize();
+        window.addEventListener('resize', () => { rect = resize(); });
+        
+        return { canvas, ctx, getRect: () => rect };
+      }
+
+      // --- Predictive Analytics Graph ---
+      const pred = setupCanvas('predictiveGraph');
+      if (pred) {
+        let offset = 0;
+        function drawPredictive() {
+          const { ctx, getRect } = pred;
+          const rect = getRect();
+          ctx.clearRect(0, 0, rect.width, rect.height);
+          
+          ctx.beginPath();
+          ctx.moveTo(0, rect.height);
+          for (let x = 0; x <= rect.width; x += 2) {
+            const y = (Math.sin(x * 0.05 + offset) * 12) + (Math.sin(x * 0.02 + offset * 0.5) * 8) + (rect.height / 2);
+            ctx.lineTo(x, y);
+          }
+          ctx.lineTo(rect.width, rect.height);
+          ctx.closePath();
+          
+          const gradient = ctx.createLinearGradient(0, 0, 0, rect.height);
+          gradient.addColorStop(0, 'rgba(59, 130, 246, 0.5)'); 
+          gradient.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
+          ctx.fillStyle = gradient;
+          ctx.fill();
+          
+          ctx.beginPath();
+          for (let x = 0; x <= rect.width; x += 2) {
+            const y = (Math.sin(x * 0.05 + offset) * 12) + (Math.sin(x * 0.02 + offset * 0.5) * 8) + (rect.height / 2);
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.strokeStyle = '#3b82f6';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          
+          const pointX = (rect.width / 2) + Math.sin(offset * 0.8) * (rect.width / 3);
+          const pointY = (Math.sin(pointX * 0.05 + offset) * 12) + (Math.sin(pointX * 0.02 + offset * 0.5) * 8) + (rect.height / 2);
+          
+          ctx.beginPath();
+          ctx.arc(pointX, pointY, 4, 0, Math.PI * 2);
+          ctx.fillStyle = '#fff';
+          ctx.fill();
+          ctx.strokeStyle = '#3b82f6';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          
+          ctx.beginPath();
+          ctx.arc(pointX, pointY, 8 + Math.abs(Math.sin(offset * 3)) * 4, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+          ctx.fill();
+          
+          offset += 0.04;
+          requestAnimationFrame(drawPredictive);
+        }
+        drawPredictive();
+      }
+
+      // --- Anomaly Detection Graph ---
+      const anom = setupCanvas('anomalyGraph');
+      if (anom) {
+        let scanLine = 0;
+        function drawAnomaly() {
+          const { ctx, getRect } = anom;
+          const rect = getRect();
+          ctx.clearRect(0, 0, rect.width, rect.height);
+          
+          // Draw grid
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          for (let i = 0; i < rect.width; i += 20) { ctx.moveTo(i, 0); ctx.lineTo(i, rect.height); }
+          for (let i = 0; i < rect.height; i += 20) { ctx.moveTo(0, i); ctx.lineTo(rect.width, i); }
+          ctx.stroke();
+
+          // Draw targets
+          ctx.strokeStyle = 'var(--accent-danger)';
+          ctx.lineWidth = 2;
+          const targets = [[30, 40], [rect.width - 50, 20], [rect.width / 2, rect.height - 20]];
+          targets.forEach(t => {
+            ctx.strokeRect(t[0] - 10, t[1] - 10, 20, 20);
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.2)';
+            ctx.fillRect(t[0] - 10, t[1] - 10, 20, 20);
+          });
+
+          // Draw scan line
+          scanLine = (scanLine + 2) % rect.width;
+          ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+          ctx.fillRect(0, 0, scanLine, rect.height);
+          
+          ctx.beginPath();
+          ctx.moveTo(scanLine, 0);
+          ctx.lineTo(scanLine, rect.height);
+          ctx.strokeStyle = '#10b981';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          
+          requestAnimationFrame(drawAnomaly);
+        }
+        drawAnomaly();
+      }
+
+      // --- Sync Graph ---
+      const sync = setupCanvas('syncGraph');
+      if (sync) {
+        let time = 0;
+        function drawSync() {
+          const { ctx, getRect } = sync;
+          const rect = getRect();
+          ctx.clearRect(0, 0, rect.width, rect.height);
+          
+          const nodes = [
+            {x: 20, y: rect.height / 2},
+            {x: rect.width / 2, y: 20},
+            {x: rect.width / 2, y: rect.height - 20},
+            {x: rect.width - 20, y: rect.height / 2}
+          ];
+
+          // Draw connections
+          ctx.strokeStyle = 'rgba(59, 130, 246, 0.3)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(nodes[0].x, nodes[0].y);
+          ctx.lineTo(nodes[1].x, nodes[1].y);
+          ctx.lineTo(nodes[3].x, nodes[3].y);
+          ctx.lineTo(nodes[2].x, nodes[2].y);
+          ctx.lineTo(nodes[0].x, nodes[0].y);
+          ctx.stroke();
+          
+          // Data packets
+          const t = (Math.sin(time) + 1) / 2; // 0 to 1
+          ctx.fillStyle = '#fff';
+          ctx.beginPath();
+          ctx.arc(nodes[0].x + (nodes[1].x - nodes[0].x) * t, nodes[0].y + (nodes[1].y - nodes[0].y) * t, 3, 0, Math.PI*2);
+          ctx.arc(nodes[3].x + (nodes[2].x - nodes[3].x) * t, nodes[3].y + (nodes[2].y - nodes[3].y) * t, 3, 0, Math.PI*2);
+          ctx.fill();
+
+          // Nodes
+          nodes.forEach((n, i) => {
+            const pulse = 4 + Math.sin(time * 2 + i) * 2;
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, pulse, 0, Math.PI * 2);
+            ctx.fillStyle = i === 3 ? '#10b981' : '#3b82f6';
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, pulse + 4, 0, Math.PI * 2);
+            ctx.fillStyle = i === 3 ? 'rgba(16, 185, 129, 0.2)' : 'rgba(59, 130, 246, 0.2)';
+            ctx.fill();
+          });
+          
+          time += 0.05;
+          requestAnimationFrame(drawSync);
+        }
+        drawSync();
+      }
+
+    });
+  </script>
 </body>
 </html>

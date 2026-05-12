@@ -1,3 +1,11 @@
 fastapi
 uvicorn
 pydantic
+ultralytics
+opencv-python-headless
+python-multipart
+facenet-pytorch
+torch
+torchvision
+transformers
+scipy

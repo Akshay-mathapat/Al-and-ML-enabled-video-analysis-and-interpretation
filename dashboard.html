@@ -27,6 +27,9 @@
       <div class="nav-item" id="nav-heatmap">
         <i class="ri-radar-line"></i> Heatmap / Radar
       </div>
+      <div class="nav-item" id="nav-watchlist">
+        <i class="ri-user-search-line"></i> Suspect Watchlist
+      </div>
       <div class="nav-item" id="nav-alerts">
         <i class="ri-alarm-warning-line"></i> Alert Logs
       </div>
@@ -73,14 +76,16 @@
         <!-- Camera 1: Normal Feed -->
         <div class="glass-panel cam-card">
           <div class="cam-header">
-            <div class="cam-title"><i class="ri-vidicon-line"></i> Drone Cam - Sector A</div>
+            <div class="cam-title">
+              <i class="ri-vidicon-line"></i> Drone Cam
+              <select id="cam1Source" style="margin-left: 10px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 2px;">
+                <option value="assets/video/normal1.mp4">Default Drone</option>
+              </select>
+            </div>
             <div class="status-badge"><span class="status-dot"></span> Live</div>
           </div>
           <div class="cam-feed">
-            <video id="vid1" muted loop playsinline>
-              <source src="./assets/video/normal1.mp4" type="video/mp4">
-            </video>
-            <div class="cam-overlay" id="overlay1"></div>
+            <img id="vid1" src="/api/stream/cam1" alt="Drone Cam - Sector A Stream" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
           </div>
           <div class="cam-footer">
             <button class="btn btn-outline" onclick="togglePlay('vid1')"><i class="ri-play-circle-line"></i> Play/Pause</button>
@@ -91,18 +96,16 @@
         <!-- Camera 2: Anomaly Detection Feed -->
         <div class="glass-panel cam-card" style="border-color: rgba(239,68,68,0.3);">
           <div class="cam-header">
-            <div class="cam-title" style="color: var(--accent-danger);"><i class="ri-error-warning-line"></i> CCTV 4 - Restricted Area</div>
+            <div class="cam-title" style="color: var(--accent-danger);">
+              <i class="ri-error-warning-line"></i> CCTV 4
+              <select id="cam2Source" style="margin-left: 10px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 2px;">
+                <option value="assets/video/anomoly1.mp4">Default CCTV</option>
+              </select>
+            </div>
             <div class="status-badge warning"><span class="status-dot"></span> Anomaly Detected</div>
           </div>
           <div class="cam-feed">
-            <video id="vid2" muted loop playsinline>
-              <source src="./assets/video/anomoly1.mp4" type="video/mp4">
-            </video>
-            <div class="cam-overlay" id="overlay2">
-              <div class="bbox" id="bbox2">
-                <div class="bbox-label">Suspicious Movement 98%</div>
-              </div>
-            </div>
+            <img id="vid2" src="/api/stream/cam2" alt="CCTV 4 - Restricted Area Stream" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
           </div>
           <div class="cam-footer">
             <button class="btn btn-outline" onclick="togglePlay('vid2')"><i class="ri-play-circle-line"></i> Play/Pause</button>
@@ -145,6 +148,30 @@
       </div>
     </div>
 
+    <div id="view-watchlist" class="view-section">
+      <div class="glass-panel" style="padding: 1.5rem;">
+        <div class="cam-header" style="margin-bottom: 2rem;">
+          <div class="cam-title"><i class="ri-user-search-line"></i> Watchlist Management</div>
+        </div>
+        
+        <form id="uploadWatchlistForm" style="margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;">
+          <div class="settings-group">
+            <label>Upload Suspect Photo</label>
+            <div style="display: flex; gap: 10px;">
+              <input type="text" id="suspectName" placeholder="Suspect Name" required style="flex: 1; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); color: white;">
+              <input type="file" id="suspectPhoto" accept="image/jpeg, image/png" required style="flex: 1; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">
+              <button type="submit" class="btn btn-outline" style="background: var(--accent-danger); color: white; border-color: var(--accent-danger);"><i class="ri-user-add-line"></i> Add to DB</button>
+            </div>
+          </div>
+        </form>
+
+        <h4>Active Watchlist</h4>
+        <div id="watchlistGrid" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+          <!-- Loaded via JS -->
+        </div>
+      </div>
+    </div>
+
     <div id="view-alerts" class="view-section">
       <div class="alerts-table-container glass-panel">
         <table class="alerts-table">
@@ -169,6 +196,17 @@
           <div class="cam-title"><i class="ri-settings-3-line"></i> Model Configuration</div>
         </div>
         <div style="padding: 1.5rem;">
+          
+          <form id="uploadVideoForm" style="margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem;">
+            <div class="settings-group">
+              <label>Upload Custom Video for Analysis (.mp4)</label>
+              <div style="display: flex; gap: 10px;">
+                <input type="file" id="videoFile" accept="video/mp4" required style="flex: 1; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">
+                <button type="submit" class="btn btn-outline"><i class="ri-upload-cloud-2-line"></i> Upload</button>
+              </div>
+            </div>
+          </form>
+
           <form id="modelSettingsForm">
             <div class="settings-group">
               <label>Detection Confidence Threshold (<span id="confValue">85</span>%)</label>
